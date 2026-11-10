@@ -4,7 +4,7 @@ import time
 from ai_service import analyze_sentiment
 
 # ตั้งค่าหน้าเว็บ
-st.set_page_config(page_title="เซียมซี : ฮีลใจสายมู", page_icon="🔮", layout="centered")
+st.set_page_config(page_title="เซียมซี: ฮีลใจสายมู", page_icon="🔮", layout="centered")
 
 # ตกแต่ง CSS ธีมดวงดาว สายมู ดาร์กโมดลึกลับ
 st.markdown("""
@@ -34,19 +34,11 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
         color: #ffffff;
     }
-    .lucky-card {
-        background: rgba(30, 27, 75, 0.7);
-        border: 1px solid rgba(168, 85, 247, 0.3);
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        backdrop-filter: blur(4px);
-    }
     </style>
 """, unsafe_allow_html=True)
 
 # หัวข้อหลัก
-st.title("🔮 เซียมซี : ฮีลใจสายมู")
+st.title("🔮 เซียมซี: ฮีลใจสายมู")
 st.markdown("##### *✨ ตั้งจิตอธิษฐาน พิมพ์ระบายความในใจ แล้วเขย่ากระบอกเซียมซีรับคำทำนายแห่งดวงดาว*")
 
 st.markdown("---")
@@ -55,6 +47,14 @@ st.markdown("---")
 user_input = st.text_input("💬 พิมพ์เรื่องที่คุณกำลังเครียดหรือกังวลตอนนี้:", placeholder="เช่น ปั่นโปรเจกต์กลุ่มไม่ไหวแล้ว, คิดถึงแมว, ชีวิตช่วงนี้เหนื่อยจัง...")
 
 st.markdown("<br>", unsafe_allow_html=True)
+
+# รายการใบเซียมซีสำรอง (กรณีสุ่ม)
+fortune_list = [
+    "“ช่วงนี้ดวงงานรุมเร้า ทำโปรเจกต์กลุ่มจนตาแตก แนะนำให้สูดหายใจเข้าลึกๆ มองดูดวงดาวแล้วบอกตัวเองว่า 'เดี๋ยวทุกอย่างก็ผ่านพ้นไปได้ด้วยดี' ลุยต่ออีกนิด ชัยชนะรออยู่!”",
+    "“สิ่งที่คุณกังวลอยู่ ภายใต้แสงดาวแห่งจักรวาลบอกว่ามันจะคลี่คลายในไม่ช้า หาชานมไข่มุกกินแล้วนอนหลับให้เต็มอิ่ม พรุ่งนี้ค่อยลุยใหม่!”",
+    "“ดวงชะตาบอกว่าช่วงนี้เหนื่อยหน่อยนะ แต่ความพยายามจะไม่สูญเปล่า ระวังเรื่องสุขภาพ พักผ่อนบ้าง แล้วทุกอย่างจะราบรื่นเกินคาด!”",
+    "“โอ๋ๆ นะคะคนเก่ง ช่วงนี้ดาวมฤตยูโคจรเข้าใกล้ความเครียด แนะนำให้ป้ายยาตัวเองด้วยการดูแมวหรือหาของอร่อยกิน แล้วพลังใจจะกลับมาเต็มเปี่ยม!”"
+]
 
 # ปุ่มกดเขย่าเซียมซี
 if st.button("🪩 เริ่มเขย่ากระบอกเซียมซี..."):
@@ -71,10 +71,10 @@ if st.button("🪩 เริ่มเขย่ากระบอกเซีย�
         
         for anim in shake_animations:
             shake_placeholder.markdown(f"<h3 style='text-align: center; color: #c084fc;'>{anim}</h3>", unsafe_allow_html=True)
-            time.sleep(0.6)
+            time.sleep(0.5)
             
         with st.spinner("ดาวเคราะห์กำลังโคจรเชื่อมโยงกับ AIForThai..."):
-            # เรียกใช้ฟังก์ชันยิง API
+            # เรียกใช้ฟังก์ชันยิง API จริง
             api_result = analyze_sentiment(user_input)
             
         shake_placeholder.empty()
@@ -85,7 +85,9 @@ if st.button("🪩 เริ่มเขย่ากระบอกเซีย�
         
         with col1:
             st.markdown("### 📜 คำทำนายจากเซียมซีดวงดาว")
-            st.info("“ช่วงนี้ดวงงานรุมเร้า ทำโปรเจกต์กลุ่มจนตาแตก แนะนำให้สูดหายใจเข้าลึกๆ มองดูดวงดาวแล้วบอกตัวเองว่า 'เดี๋ยวทุกอย่างก็ผ่านพ้นไปได้ด้วยดี' ลุยต่ออีกนิด ชัยชนะรออยู่!”")
+            # สุ่มใบเซียมซีไม่ให้ซ้ำซากจำเจ
+            selected_fortune = random.choice(fortune_list)
+            st.info(selected_fortune)
             
             with st.expander("🔍 ดูผลวิเคราะห์พลังงาน AI"):
                 st.json(api_result)
